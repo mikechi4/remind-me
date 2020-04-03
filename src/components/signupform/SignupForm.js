@@ -1,13 +1,20 @@
 import React from "react";
+import Axios from "axios";
 
 const initialState = {
   username: "",
   email: "",
   password: "",
-  usernameError: "",
-  emailError: "",
-  passwordError: ""
+  errors: {
+    usernameError: "",
+    emailError: "",
+    passwordError: ""
+  }
 };
+
+const pwRegex = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/);
+const emailRegex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+const usernameRegex = new RegExp(/^[a-zA-Z0-9.-_$@*!]{3,30}$/);
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -16,23 +23,37 @@ class SignupForm extends React.Component {
   }
 
   handleInputChange = e => {
-    this.setState({ [`${e.target.name}`]: e.target.value });
+    const { name, value } = e.target;
+    let errors = this.state.errors;
+
+    switch (name) {
+      case "username":
+        errors.usernameError = usernameRegex.test(value)
+          ? ""
+          : "Please enter a valid username.";
+        break;
+      case "email":
+        errors.emailError = emailRegex.test(value)
+          ? ""
+          : "Please enter a valid email address";
+        break;
+      case "password":
+        errors.passwordError = pwRegex.test(value)
+          ? ""
+          : "Password must be greater than 8 characters, contain an uppercase, contain a lowercase, and a number";
+        break;
+      default:
+        break;
+    }
+    this.setState({ errors, [`${name}`]: value });
   };
 
   onSubmit = event => {
     event.preventDefault();
-    const isValid = this.validateField();
-    if (isValid) {
-      console.log(this.state);
-      // clear form if valid
-      this.setState(initialState);
-    }
-  };
-
-  validateField = () => {
-    let usernameError = "";
-    let passwordError = "";
-    let emailError = "";
+    this.setState(initialState);
+    Axios.get("/api/test").then(res => {
+      console.log(res);
+    });
   };
 
   render() {
@@ -48,7 +69,7 @@ class SignupForm extends React.Component {
               onChange={this.handleInputChange}
             />
           </div>
-          <div>{this.state.usernameError}</div>
+          <div>{this.state.errors.usernameError}</div>
           <div className="input-field">
             <label htmlFor="email">Enter an email address</label>
             <input
@@ -57,7 +78,7 @@ class SignupForm extends React.Component {
               value={this.state.email}
               onChange={this.handleInputChange}
             />
-            <div>{this.state.emailError}</div>
+            <div>{this.state.errors.emailError}</div>
           </div>
           <div className="input-field">
             <label htmlFor="password">Enter password</label>
@@ -68,9 +89,17 @@ class SignupForm extends React.Component {
               onChange={this.handleInputChange}
             />
           </div>
-          <div>{this.state.passwordError}</div>
+          <div>{this.state.errors.passwordError}</div>
           <div className="submit-btn">
-            <button onClick={this.createUser}>Submit</button>
+            <button
+              disabled={
+                !this.state.username ||
+                !this.state.email ||
+                !this.state.password
+              }
+            >
+              Submit
+            </button>
           </div>
         </form>
       </div>
