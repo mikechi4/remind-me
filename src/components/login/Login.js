@@ -6,7 +6,7 @@ import "./Login.scss"
 const initialState = {
     username: "",
     password: "",
-    errors: ""
+    error: ""
 };
 
 
@@ -16,16 +16,35 @@ class Login extends React.Component {
         this.state = initialState;
     }
 
-    handleInputChange = e => { };
+    handleInputChange = e => {
+        const { name, value } = e.target;
+        this.setState({
+            [`${name}`]: value
+        })
+    };
 
-    onSubmit = event => {
-        Axios.post("/login")
+    onSubmit = e => {
+        e.preventDefault();
+        const { username, password } = this.state
+        Axios({
+            method: 'POST',
+            url: "/api/login",
+            data: { username, password }
+        }).then((res) => {
+            this.setState(initialState);
+            this.props.history.push('/home');
+        }).catch((error) => {
+            console.log(error.message)
+            this.setState({ error: error.response.data.message })
+            console.log(error.response.data.message)
+
+        })
     };
 
     render() {
         return (
             <div className="signup-form" >
-                <form onSubmit={this.onSubmit} className="ui form">
+                <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label htmlFor="username">Enter your username</label>
                         <input
@@ -46,6 +65,7 @@ class Login extends React.Component {
                             onChange={this.handleInputChange}
                         />
                     </div>
+                    <div className="form-text text-danger">{this.state.error}</div>
                     <div className="submit-btn">
                         <button className="btn btn-primary" disabled={!this.state.username || !this.state.password}> Submit </button>
                     </div>
@@ -54,4 +74,5 @@ class Login extends React.Component {
         );
     }
 }
+
 export default Login;
