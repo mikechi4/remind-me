@@ -18,7 +18,9 @@ class Login extends React.Component {
 
     handleInputChange = e => { };
 
-    onSubmit = event => { };
+    onSubmit = event => {
+        Axios.post("/login")
+    };
 
     render() {
         return (
