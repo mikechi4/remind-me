@@ -65,12 +65,12 @@ class SignupForm extends React.Component {
     }).catch(error => {
       // handle errors
       console.log(error);
-      this.setState(prevState => ({
-        error: {
-          ...prevState.error,
-          usernameError: 'Username already exists'
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          usernameError: "Username already exists."
         }
-      }))
+      })
     });;
   };
 
