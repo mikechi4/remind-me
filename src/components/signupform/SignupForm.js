@@ -79,7 +79,7 @@ class SignupForm extends React.Component {
   render() {
     return (
       <div className="signup-form" >
-        <form onSubmit={this.onSubmit} className="ui form">
+        <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label htmlFor="username">Enter a username</label>
             <input
