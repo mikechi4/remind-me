@@ -1,8 +1,5 @@
-// const app = require("..");
-// const db = app.get("db");
 const mongoose = require("mongoose");
 const User = require("../models/User");
-console.log(User)
 
 // const bcrypt = require("bcryptjs");
 
@@ -47,6 +44,31 @@ module.exports = {
             console.log(e)
         }
 
+    },
+    validateLogin: (req, res) => {
+        const { username, password } = req.body;
+        try {
+            User.findOne({
+                username
+            }, (err, response) => {
+                if (err) {
+                    res.status(401).send({ success: false, message: err })
+                } else if (response) {
+                    const user = response;
+                    if (user.password === password) {
+                        res.status(200).send({ success: true })
+                    } else {
+                        console.log('no pw matchs')
+                        res.status(401).send({ success: false, message: "Username or password is incorrect" })
+                    }
+                } else {
+                    console.log('no username')
+                    res.status(401).send({ success: false, message: "Username or password is incorrect" })
+                }
+            });
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     //END OF EXPORT
