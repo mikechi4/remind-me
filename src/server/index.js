@@ -31,6 +31,7 @@ app.get("/api/test", (req, res, next) => {
 });
 
 app.post("/api/create", userCtrl.createUser);
+app.post("/api/login", userCtrl.validateLogin);
 
 app.get("/api/users", userCtrl.getUser);
 app.listen(port, () => {
