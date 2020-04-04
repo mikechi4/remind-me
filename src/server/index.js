@@ -2,13 +2,26 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
 
-const port = process.env.PORT || 8080;
+const port = 8080;
+
+const userCtrl = require("./controllers/userCtrl");
 
 //======= MIDDLEWARE =======
 app.use(bodyParser.json());
 app.use(cors());
+mongoose.connect("=mongodb://localhost/remind-me", {
+  useNewUrlParser: true
+});
+
+const db = mongoose.connection;
+db.on("error", error => {
+  console.log(error)
+});
+db.once("open", () => {
+  console.log("connected to mongoose");
+});
 
 app.get("/api/test", (req, res, next) => {
   console.log("HELLOO");
@@ -17,6 +30,11 @@ app.get("/api/test", (req, res, next) => {
   });
 });
 
+app.post("/api/create", userCtrl.createUser);
+
+app.get("/api/users", userCtrl.getUser);
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`);
 });
+
+
