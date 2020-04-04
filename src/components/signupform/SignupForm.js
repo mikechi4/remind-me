@@ -50,10 +50,26 @@ class SignupForm extends React.Component {
 
   onSubmit = event => {
     event.preventDefault();
-    this.setState(initialState);
-    Axios.get("/api/test").then(res => {
+    const { username, email, password } = this.state;
+
+    Axios.post("/api/create", {
+      username,
+      email,
+      password
+    }).then(res => {
       console.log(res);
-    });
+      this.setState(initialState);
+      // send user back to log in
+    }).catch(error => {
+      // handle errors
+      console.log(error);
+      this.setState(prevState => ({
+        error: {
+          ...prevState.error,
+          usernameError: 'Username already exists'
+        }
+      }))
+    });;
   };
 
   render() {
