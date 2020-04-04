@@ -1,6 +1,8 @@
 import React from "react";
 import Axios from "axios";
 
+import "./SignupForm.scss"
+
 const initialState = {
   username: "",
   email: "",
@@ -74,40 +76,44 @@ class SignupForm extends React.Component {
 
   render() {
     return (
-      <div className="signup-form">
+      <div className="signup-form" >
         <form onSubmit={this.onSubmit} className="ui form">
-          <div className="input-field">
+          <div className="form-group">
             <label htmlFor="username">Enter a username</label>
             <input
+              className="form-control"
               type="text"
               name="username"
               value={this.state.username}
               onChange={this.handleInputChange}
             />
           </div>
-          <div>{this.state.errors.usernameError}</div>
-          <div className="input-field">
+          <div className="form-text text-danger">{this.state.errors.usernameError}</div>
+          <div className="form-group">
             <label htmlFor="email">Enter an email address</label>
             <input
+              className="form-control"
               type="text"
               name="email"
               value={this.state.email}
               onChange={this.handleInputChange}
             />
-            <div>{this.state.errors.emailError}</div>
+            <div className="form-text text-danger">{this.state.errors.emailError}</div>
           </div>
-          <div className="input-field">
+          <div className="form-group">
             <label htmlFor="password">Enter password</label>
             <input
+              className="form-control"
               type="password"
               name="password"
               value={this.state.password}
               onChange={this.handleInputChange}
             />
           </div>
-          <div>{this.state.errors.passwordError}</div>
+          <div className="form-text text-danger">{this.state.errors.passwordError}</div>
           <div className="submit-btn">
             <button
+              className="btn btn-primary"
               disabled={
                 !this.state.username ||
                 !this.state.email ||
