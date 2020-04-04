@@ -61,7 +61,9 @@ class SignupForm extends React.Component {
     }).then(res => {
       console.log(res);
       this.setState(initialState);
+      this.props.history.push('/login');
       // send user back to log in
+
     }).catch(error => {
       // handle errors
       console.log(error);
