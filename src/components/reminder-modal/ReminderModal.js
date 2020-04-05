@@ -3,23 +3,28 @@ import { Modal, Button } from 'react-bootstrap';
 
 import Reminder from "../reminder/Reminder";
 
+const defaultState = { reminder: "", dueDate: new Date() };
 const ReminderModal = (props) => {
     const [showModal, setShow] = useState(props.showModal);
-    const [reminderData, setReminderData] = useState({ reminder: "", dueDate: new Date() });
+    const [reminderData, setReminderData] = useState(defaultState);
 
     useEffect(() => {
         setShow(props.showModal)
     }, [props.showModal]);
 
     useEffect(() => {
-        setReminderData(reminderData)
+        setReminderData(reminderData);
     }, [reminderData]);
 
     const handleClose = () => {
         props.toggleModalState();
+        setReminderData(defaultState)
         setShow(false);
     }
 
+    const saveReminder = () => {
+        console.log(reminderData)
+    }
     return (
         <Modal
             show={showModal}
@@ -34,7 +39,7 @@ const ReminderModal = (props) => {
 
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>Close</Button>
-                <Button variant="primary" onClick={handleClose}>Save changes</Button>
+                <Button variant="primary" disabled={reminderData.reminder === "" || !reminderData.dueDate} onClick={handleClose}>Save changes</Button>
             </Modal.Footer>
         </Modal>
 
