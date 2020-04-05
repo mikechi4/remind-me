@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const Reminder = require("../models/Reminder");
 
 // const bcrypt = require("bcryptjs");
@@ -22,7 +21,8 @@ module.exports = {
                 res.status(200).send({ success: true, message: 'User created' })
             }
         });
-    }
+    },
+
 
     //END OF EXPORT
 };
