@@ -22,7 +22,7 @@ class Home extends React.Component {
     render() {
         return (
             <div className="home-container">
-                <ReminderModal showModal={this.state.showModal} toggleModal={this.toggleModalState} />
+                <ReminderModal showModal={this.state.showModal} toggleModalState={this.toggleModalState} />
                 <div className="text-center">
                     <h1>Welcome</h1>
                 </div>
