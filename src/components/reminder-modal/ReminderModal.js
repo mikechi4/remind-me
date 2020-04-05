@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-
+import Axios from 'axios';
 import Reminder from "../reminder/Reminder";
 
 const defaultState = { reminder: "", dueDate: new Date() };
@@ -23,7 +23,9 @@ const ReminderModal = (props) => {
     }
 
     const saveReminder = () => {
-        console.log(reminderData)
+        Axios.post("/api/add", { ...reminderData }).then((response) => {
+            console.log(response)
+        })
     }
     return (
         <Modal
@@ -39,7 +41,7 @@ const ReminderModal = (props) => {
 
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>Close</Button>
-                <Button variant="primary" disabled={reminderData.reminder === "" || !reminderData.dueDate} onClick={handleClose}>Save changes</Button>
+                <Button variant="primary" disabled={reminderData.reminder === "" || !reminderData.dueDate} onClick={saveReminder}>Save changes</Button>
             </Modal.Footer>
         </Modal>
 

@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const port = 8080;
 
 const userCtrl = require("./controllers/userCtrl");
+const reminderCtrl = require("./controllers/reminderCtrl");
 
 //======= MIDDLEWARE =======
 app.use(bodyParser.json());
@@ -32,6 +33,7 @@ app.get("/api/test", (req, res, next) => {
 
 app.post("/api/create", userCtrl.createUser);
 app.post("/api/login", userCtrl.validateLogin);
+app.post("/api/add", reminderCtrl.createReminder)
 
 app.get("/api/users", userCtrl.getUser);
 app.listen(port, () => {
