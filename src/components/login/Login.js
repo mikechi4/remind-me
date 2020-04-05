@@ -1,6 +1,6 @@
 import React from "react";
 import Axios from "axios";
-
+import { Form, Button } from 'react-bootstrap'
 import "./Login.scss"
 
 const initialState = {
@@ -44,32 +44,32 @@ class Login extends React.Component {
     render() {
         return (
             <div className="signup-form" >
-                <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="username">Enter your username</label>
-                        <input
+                <Form onSubmit={this.onSubmit}>
+                    <Form.Group className="form-group">
+                        <Form.Label htmlFor="username">Enter your username</Form.Label>
+                        <Form.Control
                             className="form-control"
                             type="text"
                             name="username"
                             value={this.state.username}
                             onChange={this.handleInputChange}
                         />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input
+                    </Form.Group>
+                    <Form.Group className="form-group">
+                        <Form.Label htmlFor="password">Password</Form.Label>
+                        <Form.Control
                             className="form-control"
                             type="password"
                             name="password"
                             value={this.state.password}
                             onChange={this.handleInputChange}
                         />
-                    </div>
+                    </Form.Group>
                     <div className="form-text text-danger">{this.state.error}</div>
-                    <div className="submit-btn">
-                        <button className="btn btn-primary" disabled={!this.state.username || !this.state.password}> Submit </button>
-                    </div>
-                </form>
+                    <Form.Group className="submit-btn">
+                        <Button className="btn btn-success" disabled={!this.state.username || !this.state.password} type="submit"> Log In </Button>
+                    </Form.Group>
+                </Form>
             </div>
         );
     }
