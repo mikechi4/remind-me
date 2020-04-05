@@ -1,0 +1,10 @@
+.reminder-item-container {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  .action-buttons {
+    button {
+      width: 80px;
+    }
+  }
+}
