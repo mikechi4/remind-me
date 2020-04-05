@@ -1,0 +1,8 @@
+@import "~react-datepicker/dist/react-datepicker.css";
+
+.reminder-container {
+  .date-picker {
+    display: flex;
+    flex-direction: column;
+  }
+}

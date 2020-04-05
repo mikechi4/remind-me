@@ -1,18 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import Axios from 'axios';
+import Reminder from "../reminder/Reminder";
 
+const defaultState = { reminder: "", dueDate: new Date() };
 const ReminderModal = (props) => {
     const [showModal, setShow] = useState(props.showModal);
+    const [reminderData, setReminderData] = useState(defaultState);
 
     useEffect(() => {
         setShow(props.showModal)
     }, [props.showModal]);
 
+    useEffect(() => {
+        setReminderData(reminderData);
+    }, [reminderData]);
+
     const handleClose = () => {
         props.toggleModalState();
+        setReminderData(defaultState)
         setShow(false);
     }
 
+    const saveReminder = () => {
+        Axios.post("/api/add", { ...reminderData }).then((response) => {
+            console.log(response)
+        })
+    }
     return (
         <Modal
             show={showModal}
@@ -22,12 +36,12 @@ const ReminderModal = (props) => {
             </Modal.Header>
 
             <Modal.Body>
-                <p>Modal body text goes here.</p>
+                <Reminder data={reminderData} setReminderData={setReminderData}></Reminder>
             </Modal.Body>
 
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>Close</Button>
-                <Button variant="primary" onClick={handleClose}>Save changes</Button>
+                <Button variant="primary" disabled={reminderData.reminder === "" || !reminderData.dueDate} onClick={saveReminder}>Save changes</Button>
             </Modal.Footer>
         </Modal>
 
