@@ -13,7 +13,7 @@ class Home extends React.Component {
         }
     }
 
-    toggleModal = () => {
+    toggleModalState = () => {
         this.setState({
             showModal: !this.state.showModal
         })
@@ -22,13 +22,13 @@ class Home extends React.Component {
     render() {
         return (
             <div className="home-container">
-                <ReminderModal showModal={this.state.showModal} toggleModal={this.toggleModal} />
+                <ReminderModal showModal={this.state.showModal} toggleModal={this.toggleModalState} />
                 <div className="text-center">
                     <h1>Welcome</h1>
                 </div>
                 <div className="list-header">
                     <h2>Reminder(s)</h2>
-                    <button className="btn btn-primary" onClick={this.toggleModal}>Create Reminder</button>
+                    <button className="btn btn-primary" onClick={this.toggleModalState}>Create Reminder</button>
                 </div>
             </div>
         )

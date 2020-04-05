@@ -9,7 +9,7 @@ const ReminderModal = (props) => {
     }, [props.showModal]);
 
     const handleClose = () => {
-        props.toggleModal();
+        props.toggleModalState();
         setShow(false);
     }
 
