@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 import SignupForm from "./components/signupform/SignupForm";
 import Login from './components/login/Login';
 import Home from './components/home/Home';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 const App = () => {
   return (
     <div>
