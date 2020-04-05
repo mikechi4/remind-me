@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
+import Reminder from "../reminder/Reminder";
+
 const ReminderModal = (props) => {
     const [showModal, setShow] = useState(props.showModal);
+    const [reminderData, setReminderData] = useState({ reminder: "", dueDate: new Date() });
 
     useEffect(() => {
         setShow(props.showModal)
     }, [props.showModal]);
+
+    useEffect(() => {
+        setReminderData(reminderData)
+    }, [reminderData]);
 
     const handleClose = () => {
         props.toggleModalState();
@@ -22,7 +29,7 @@ const ReminderModal = (props) => {
             </Modal.Header>
 
             <Modal.Body>
-                <p>Modal body text goes here.</p>
+                <Reminder data={reminderData} setReminderData={setReminderData}></Reminder>
             </Modal.Body>
 
             <Modal.Footer>
