@@ -9,7 +9,7 @@ const port = 8080;
 
 const userCtrl = require("./controllers/userCtrl");
 const reminderCtrl = require("./controllers/reminderCtrl");
-const email = require("./email");
+const emailCtrl = require("./email");
 
 //======= MIDDLEWARE =======
 app.use(bodyParser.json());
@@ -35,7 +35,7 @@ app.post("/api/add", reminderCtrl.createReminder);
 app.put("/api/edit", reminderCtrl.updateReminder);
 
 // ======= Get Requests
-app.get("/api/users", userCtrl.getUser);
+// app.get("/api/users", userCtrl.getUser);
 app.get("/api/reminders", reminderCtrl.getReminders);
 
 // ======= Delete Requests
@@ -43,23 +43,19 @@ app.delete("/api/reminders/:reminderId", reminderCtrl.deleteReminder);
 
 // email.sendEmail();
 // email.sendGmail();
+const sendEmailNotification = async () => {
+  let reminders = await reminderCtrl.getExpiringReminders();
+  // reminders model does not have user_email attached since it's PII.
+  // going in to DB and grabbing all users for one call instead of iterating through reminders, grabbing id, then grabbing individual user emails
+  const usersMap = await userCtrl.getAllUsers();
+  emailCtrl.sendEmails(reminders, usersMap)
+}
+
 cron.schedule('* * * * *', () => {
   console.log('running a task every 5 minutes');
-
-  const grabAllExpiringReminders = async () => {
-    let reminders = await reminderCtrl.getExpiringReminders();
-    const usersWithExpiringReminders = await userCtrl.getUserEmail(reminders);
-    console.log('usersWithExpiringReminders')
-    console.log(usersWithExpiringReminders)
-  }
-
-
-
-  grabAllExpiringReminders();
-
-
-  // return email.sendGmail(records);
+  sendEmailNotification();
 });
+
 app.get("/api/reminders/cron", reminderCtrl.getExpiringReminders);
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`);
