@@ -11,6 +11,7 @@ const ReminderItem = (props) => {
     const deleteReminder = (reminderId) => {
         Axios.delete(`/api/reminders/${reminderId}`).then((res) => {
             console.log(res)
+            props.removeDeletedReminder(reminderId);
         })
     }
 
@@ -34,7 +35,7 @@ const ReminderItem = (props) => {
         Axios.put("/api/edit", {
             reminder, dueDate, _id
         }).then((res) => {
-            console.log(res)
+            setIsEdit(!isEdit)
         }).catch((err) => {
             console.log(err);
         })
