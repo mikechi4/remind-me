@@ -36,6 +36,9 @@ app.put("/api/edit", reminderCtrl.updateReminder);
 app.get("/api/users", userCtrl.getUser);
 app.get("/api/reminders", reminderCtrl.getReminders);
 
+// ======= Delete Requests
+app.delete("/api/reminders/:reminderId", reminderCtrl.deleteReminder);
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`);
 });

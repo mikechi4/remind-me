@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ListGroup, Button } from 'react-bootstrap';
 import { Trash, PencilSquare, ThreeDotsVertical } from 'react-bootstrap-icons';
+import Axios from 'axios';
 import DatePicker from 'react-datepicker';
 import './ReminderItem.scss';
 const ReminderItem = (props) => {
@@ -8,7 +9,10 @@ const ReminderItem = (props) => {
     const [reminderData, setReminderData] = useState(props);
 
     const deleteReminder = (reminderId) => {
-        console.log(reminderId)
+        Axios.delete(`/api/reminders/${reminderId}`).then((res) => {
+            console.log(res)
+            props.removeDeletedReminder(reminderId);
+        })
     }
 
     const handleDateChange = (date) => {
@@ -25,11 +29,18 @@ const ReminderItem = (props) => {
         })
     }
 
-    const updateReminder = (id) => {
-        console.log(id)
+    const updateReminder = (reminderDataObj) => {
+        const { reminder, dueDate, id: _id } = reminderDataObj;
+        console.log(reminderDataObj)
+        Axios.put("/api/edit", {
+            reminder, dueDate, _id
+        }).then((res) => {
+            setIsEdit(!isEdit)
+        }).catch((err) => {
+            console.log(err);
+        })
     }
     return (
-
         <ListGroup.Item >
             <div className="reminder-item-container">
                 <div className="reminder-item">
@@ -64,7 +75,7 @@ const ReminderItem = (props) => {
             </div>
 
             {isEdit ? (<div className="save-button">
-                <Button variant="success" onClick={() => updateReminder(reminderData.id)}>Save</Button>
+                <Button variant="success" onClick={() => updateReminder(reminderData)}>Save</Button>
             </div>) : ""}
         </ListGroup.Item>
     )

@@ -24,6 +24,19 @@ class Home extends React.Component {
         })
     }
 
+    findIndexById = (list, id) => {
+        return list.findIndex((reminder) => {
+            console.log(reminder)
+            return reminder._id === id
+        });
+    }
+    removeDeletedReminder = (deletedReminderId) => {
+        const updatedReminderList = this.state.reminderList.slice();
+        let index = this.findIndexById(updatedReminderList, deletedReminderId);
+        updatedReminderList.splice(index, 1);
+        this.setState({ reminderList: updatedReminderList })
+    }
+
     renderReminderList = (savedReminders) => {
         return savedReminders.map(item => {
             return (
@@ -32,10 +45,13 @@ class Home extends React.Component {
                     dueDate={item.dueDate}
                     key={item._id}
                     id={item._id}
+                    removeDeletedReminder={this.removeDeletedReminder}
                 />
             );
         });
     }
+
+
 
     componentDidMount = () => {
         this.getReminders();

@@ -35,10 +35,29 @@ module.exports = {
 
             });
         } catch (e) {
-            console.log('eeeeeee')
             console.log(e)
         }
+    },
+    updateReminder: (req, res) => {
+        const { _id, reminder, dueDate } = req.body;
+        try {
+            Reminder.updateOne({ _id: _id }, { $set: { reminder, dueDate } }).then((response) => {
+                if (response.ok === 1) {
+                    res.status(200).send({ success: true, message: "Sucesfully updated record." })
+                }
+            })
+        } catch (e) {
+            res.status(500).send({ success: false, message: "There was an error with the request" })
+        }
+        //END OF EXPORT
+    },
+    deleteReminder: (req, res) => {
+        try {
+            Reminder.findByIdAndDelete(req.params.reminderId, (response) => {
+                res.status(200).send({ success: true, message: "Succesfully deleted record" })
+            })
+        } catch (e) {
+            res.status(500).send({ success: false, message: "There was an error with the request" })
+        }
     }
-
-    //END OF EXPORT
-};
+}

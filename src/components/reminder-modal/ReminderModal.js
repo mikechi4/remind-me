@@ -24,6 +24,7 @@ const ReminderModal = (props) => {
 
     const saveReminder = () => {
         Axios.post("/api/add", { ...reminderData }).then((response) => {
+            console.log(response)
             props.toggleModalState(true);
             setShow(false);
         })
