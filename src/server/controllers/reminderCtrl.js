@@ -35,7 +35,6 @@ module.exports = {
 
             });
         } catch (e) {
-            console.log('eeeeeee')
             console.log(e)
         }
     },
@@ -55,7 +54,6 @@ module.exports = {
     deleteReminder: (req, res) => {
         try {
             Reminder.findByIdAndDelete(req.params.reminderId, (response) => {
-                console.log(response)
                 res.status(200).send({ success: true, message: "Succesfully deleted record" })
             })
         } catch (e) {
