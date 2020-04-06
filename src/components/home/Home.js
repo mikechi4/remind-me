@@ -31,6 +31,7 @@ class Home extends React.Component {
                     reminder={item.reminder}
                     dueDate={item.dueDate}
                     key={item._id}
+                    id={item._id}
                 />
             );
         });
