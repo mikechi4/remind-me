@@ -8,7 +8,6 @@ const ReminderItem = (props) => {
     const [reminderData, setReminderData] = useState(props);
 
     const deleteReminder = (reminderId) => {
-        console.log('delete');
         console.log(reminderId)
     }
 
@@ -26,7 +25,8 @@ const ReminderItem = (props) => {
         })
     }
 
-    const updateReminder = () => {
+    const updateReminder = (id) => {
+        console.log(id)
     }
     return (
 
@@ -64,7 +64,7 @@ const ReminderItem = (props) => {
             </div>
 
             {isEdit ? (<div className="save-button">
-                <Button variant="success">Save</Button>
+                <Button variant="success" onClick={() => updateReminder(reminderData.id)}>Save</Button>
             </div>) : ""}
         </ListGroup.Item>
     )
