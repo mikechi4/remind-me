@@ -4,10 +4,12 @@ const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 
+const cron = require('node-cron');
 const port = 8080;
 
 const userCtrl = require("./controllers/userCtrl");
 const reminderCtrl = require("./controllers/reminderCtrl");
+const email = require("./email");
 
 //======= MIDDLEWARE =======
 app.use(bodyParser.json());
@@ -39,6 +41,26 @@ app.get("/api/reminders", reminderCtrl.getReminders);
 // ======= Delete Requests
 app.delete("/api/reminders/:reminderId", reminderCtrl.deleteReminder);
 
+// email.sendEmail();
+// email.sendGmail();
+cron.schedule('* * * * *', () => {
+  console.log('running a task every 5 minutes');
+
+  const grabAllExpiringReminders = async () => {
+    let reminders = await reminderCtrl.getExpiringReminders();
+    const usersWithExpiringReminders = await userCtrl.getUserEmail(reminders);
+    console.log('usersWithExpiringReminders')
+    console.log(usersWithExpiringReminders)
+  }
+
+
+
+  grabAllExpiringReminders();
+
+
+  // return email.sendGmail(records);
+});
+app.get("/api/reminders/cron", reminderCtrl.getExpiringReminders);
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`);
 });

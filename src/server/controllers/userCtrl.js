@@ -69,6 +69,25 @@ module.exports = {
         } catch (e) {
             console.log(e)
         }
+    },
+    getUserEmail: async (remindersList) => {
+        // adding the user email to the reminder object. I didn't want to add the email prop on the reminders object since it's PII. So i'll iterate through the list of expiring reminders, grab users email by ID
+        let updateReminderData = remindersList.slice();
+        for (const reminder of remindersList) {
+            reminder.userEmail = await module.exports.getUserEmailById(reminder.user_id);
+        }
+        console.log('updated list')
+        console.log(updateReminderData)
+        return updateReminderData;
+    },
+    generateUserMap: async (remindersList) => {
+        try {
+            let user = await User.findById(id);
+            console.log(user.email)
+            return user.email;
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     //END OF EXPORT
