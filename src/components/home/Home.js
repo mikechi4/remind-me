@@ -63,7 +63,7 @@ class Home extends React.Component {
         })
         // this flag is to see if the user did a save. That way, we can make an API call to re-render most up to date list
         if (didSaveToDb) {
-            this.getReminders()
+            this.getReminders();
         }
     }
 
