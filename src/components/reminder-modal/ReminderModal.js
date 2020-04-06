@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import Axios from 'axios';
 import Reminder from "../reminder/Reminder";
 
-const defaultState = { reminder: "", dueDate: new Date() };
+const defaultState = { reminder: "", dueDate: new Date(), user_id: "5e8ab207464be090a61d04b9" };
 const ReminderModal = (props) => {
     const [showModal, setShow] = useState(props.showModal);
     const [reminderData, setReminderData] = useState(defaultState);

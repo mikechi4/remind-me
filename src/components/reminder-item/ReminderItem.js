@@ -31,9 +31,10 @@ const ReminderItem = (props) => {
 
     const updateReminder = (reminderDataObj) => {
         const { reminder, dueDate, id: _id } = reminderDataObj;
+        const user_id = "5e8ab207464be090a61d04b9";
         console.log(reminderDataObj)
         Axios.put("/api/edit", {
-            reminder, dueDate, _id
+            reminder, dueDate, _id, user_id
         }).then((res) => {
             setIsEdit(!isEdit)
         }).catch((err) => {
@@ -59,7 +60,7 @@ const ReminderItem = (props) => {
                             onChange={handleDateChange}
                             showTimeSelect
                             timeFormat="HH:mm"
-                            timeIntervals={15}
+                            timeIntervals={5}
                             timeCaption="time"
                             dateFormat="MMMM d, yyyy h:mm aa"
                             className="form-control"
