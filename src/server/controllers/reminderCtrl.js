@@ -22,7 +22,23 @@ module.exports = {
             }
         });
     },
+    getReminders: (req, res) => {
+        try {
+            Reminder.find({}, (err, response) => {
+                if (err) {
+                    console.log('ERRORRRR!!')
+                    console.log(err);
+                } else {
+                    console.log(response)
+                    res.status(200).send(response);
+                }
 
+            });
+        } catch (e) {
+            console.log('eeeeeee')
+            console.log(e)
+        }
+    }
 
     //END OF EXPORT
 };

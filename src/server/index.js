@@ -24,18 +24,18 @@ db.once("open", () => {
   console.log("connected to mongoose");
 });
 
-app.get("/api/test", (req, res, next) => {
-  console.log("HELLOO");
-  return res.status(200).send({
-    hello: "HI!!!"
-  });
-});
-
+// ======= Post Requests
 app.post("/api/create", userCtrl.createUser);
 app.post("/api/login", userCtrl.validateLogin);
-app.post("/api/add", reminderCtrl.createReminder)
+app.post("/api/add", reminderCtrl.createReminder);
 
+// ======= Put Requests
+app.put("/api/edit", reminderCtrl.updateReminder);
+
+// ======= Get Requests
 app.get("/api/users", userCtrl.getUser);
+app.get("/api/reminders", reminderCtrl.getReminders);
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`);
 });
