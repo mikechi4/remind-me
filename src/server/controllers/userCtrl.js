@@ -27,21 +27,19 @@ module.exports = {
             }
         });
     },
-    getUser: (req, res) => {
+    getAllUsers: (req, res) => {
         try {
-            User.find({}, (err, response) => {
-                if (err) {
-                    console.log('ERRORRRR!!')
-                    console.log(err);
-                } else {
-                    console.log(response)
-                    res.status(200).send(response);
-                }
+            return User.find({}).exec().then((response) => {
+                const userMapper = {};
+                response.forEach((user) => {
+                    userMapper[user._id] = user.email
+                })
 
+                return userMapper
             });
         } catch (e) {
-            console.log('eeeeeee')
             console.log(e)
+            return e
         }
 
     },
@@ -73,12 +71,16 @@ module.exports = {
     getUserEmail: async (remindersList) => {
         // adding the user email to the reminder object. I didn't want to add the email prop on the reminders object since it's PII. So i'll iterate through the list of expiring reminders, grab users email by ID
         let updateReminderData = remindersList.slice();
-        for (const reminder of remindersList) {
-            reminder.userEmail = await module.exports.getUserEmailById(reminder.user_id);
+        try {
+            for (const reminder of remindersList) {
+                reminder.userEmail = await module.exports.getUserEmailById(reminder.user_id);
+            }
+            return updateReminderData;
+        } catch (e) {
+            console.log(e);
+            return
         }
-        console.log('updated list')
-        console.log(updateReminderData)
-        return updateReminderData;
+
     },
     generateUserMap: async (remindersList) => {
         try {
