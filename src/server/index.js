@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
-
+require('dotenv').config();
 const cron = require('node-cron');
 const port = 8080;
 
@@ -41,18 +41,23 @@ app.get("/api/reminders", reminderCtrl.getReminders);
 // ======= Delete Requests
 app.delete("/api/reminders/:reminderId", reminderCtrl.deleteReminder);
 
-// email.sendEmail();
-// email.sendGmail();
 const sendEmailNotification = async () => {
+  // grabbing any reminders that will expire in the next five minutes
   let reminders = await reminderCtrl.getExpiringReminders();
+  if (reminders.length <= 0) {
+    console.log('no jobs')
+    return
+  }
   // reminders model does not have user_email attached since it's PII.
   // going in to DB and grabbing all users for one call instead of iterating through reminders, grabbing id, then grabbing individual user emails
   const usersMap = await userCtrl.getAllUsers();
-  emailCtrl.sendEmails(reminders, usersMap)
+  emailCtrl.sendEmails(reminders, usersMap).then((response) => {
+    return
+  })
 }
 
-cron.schedule('* * * * *', () => {
-  console.log('running a task every 5 minutes');
+
+cron.schedule('* 5 * * *', () => {
   sendEmailNotification();
 });
 
