@@ -38,15 +38,19 @@ db.once("open", () => {
 });
 
 // ======= Post Requests
-app.post("/api/create", userCtrl.createUser);
+app.post("/api/signup", userCtrl.createUser);
 app.post("/api/login", userCtrl.validateLogin);
 app.post("/api/add", reminderCtrl.createReminder);
-
+app.post("/api/logout", function (req, res) {
+  req.logout();
+  console.log(req.session.passport.user)
+  res.status(200).send({ message: "Sucessfully logged out", isAuthenticated: false })
+});
 // ======= Put Requests
 app.put("/api/edit", reminderCtrl.updateReminder);
 
 // ======= Get Requests
-app.get("/api/users", userCtrl.getUsers);
+
 app.get("/api/reminders", reminderCtrl.getReminders);
 
 // ======= Delete Requests

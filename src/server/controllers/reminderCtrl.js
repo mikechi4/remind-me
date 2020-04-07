@@ -1,16 +1,13 @@
 const Reminder = require("../models/Reminder");
 const nodemailer = require("nodemailer");
-// const bcrypt = require("bcryptjs");
 
-// const hashPassword = password => {
-//   const salt = bcrypt.genSaltSync(10);
-//   const hash = bcrypt.hashSync(password, salt);
-//   return hash;
-// };
 
 module.exports = {
     createReminder: (req, res) => {
+        const userId = req.session.passport.user;
         var reminderObj = { ...req.body };
+        console.log(req.session.passport.user)
+        reminderObj.user_id = userId;
         const reminder = new Reminder(reminderObj)
         reminder.save(err => {
             if (err) {
@@ -23,8 +20,9 @@ module.exports = {
         });
     },
     getReminders: (req, res) => {
+        const userId = req.session.passport.user;
         try {
-            Reminder.find({}, (err, response) => {
+            Reminder.find({ user_id: userId }, (err, response) => {
                 if (err) {
                     console.log('ERRORRRR!!')
                     console.log(err);
