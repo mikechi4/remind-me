@@ -1,13 +1,6 @@
 const User = require("../models/User");
 const passport = require('../passport/passport');
 
-// const bcrypt = require("bcryptjs");
-
-// const hashPassword = password => {
-//   const salt = bcrypt.genSaltSync(10);
-//   const hash = bcrypt.hashSync(password, salt);
-//   return hash;
-// };
 
 module.exports = {
     createUser: (req, res, next) => {
@@ -19,9 +12,19 @@ module.exports = {
                 })
             }
 
-            return res.status(200).send({
-                message: "FOUND A USER"
+            req.logIn(user, (error, data) => {
+                if (error) {
+                    return res.status(500).send({
+                        message: error,
+                        error: "Internal server error"
+                    });
+                }
+
+                return res.status(200).send({
+                    message: "FOUND A USER"
+                })
             })
+
         })(req, res, next)
     },
     getAllUsers: (req, res) => {
@@ -41,7 +44,7 @@ module.exports = {
 
     },
     validateLogin: (req, res, next) => {
-        passport.authenticate('local-signin', (error, user, info) => {
+        passport.authenticate('local-signin', function (error, user, info) {
             if (error) {
                 return res.status(401).send({
                     message: error,
@@ -49,9 +52,16 @@ module.exports = {
                 })
             }
 
-            return res.status(200).send({
-                message: "FOUND A USER"
-            })
+            req.logIn(user, (error, data) => {
+                if (error) {
+                    return res.status(500).send({
+                        message: error,
+                        error: "Internal server error"
+                    });
+                }
+
+                return res.status(200).send(user)
+            });
         })(req, res, next)
     }
     //END OF EXPORT
