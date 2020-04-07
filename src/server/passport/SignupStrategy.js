@@ -21,7 +21,7 @@ const localStrategy = new LocalStrategy({ passReqToCallback: true }, function (r
             if (err) {
                 return done(err, null)
             } else {
-                done(null, "Successfully created an account!")
+                done(null, inserted)
             }
         });
     });
