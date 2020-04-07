@@ -1,12 +1,9 @@
 const Reminder = require("../models/Reminder");
-const nodemailer = require("nodemailer");
-
 
 module.exports = {
     createReminder: (req, res) => {
         const userId = req.session.passport.user;
         var reminderObj = { ...req.body };
-        console.log(req.session.passport.user)
         reminderObj.user_id = userId;
         const reminder = new Reminder(reminderObj)
         reminder.save(err => {
@@ -30,7 +27,6 @@ module.exports = {
                     console.log(response)
                     res.status(200).send(response);
                 }
-
             });
         } catch (e) {
             console.log(e)
@@ -47,10 +43,8 @@ module.exports = {
         } catch (e) {
             res.status(500).send({ success: false, message: "There was an error with the request" })
         }
-        //END OF EXPORT
     },
     deleteReminder: (req, res) => {
-
         try {
             Reminder.findByIdAndDelete(req.params.reminderId, (response) => {
                 res.status(200).send({ success: true, message: "Succesfully deleted record" })

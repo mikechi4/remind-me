@@ -11,5 +11,3 @@ var UserSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("User", UserSchema);
-// Now `require('Item.js')` will return a mongoose Model,
-// without needing to do require('Item.js').Item
