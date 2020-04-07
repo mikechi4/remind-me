@@ -45,7 +45,7 @@ const Reminder = (props) => {
                         onChange={handleDateChange}
                         showTimeSelect
                         timeFormat="HH:mm"
-                        timeIntervals={15}
+                        timeIntervals={5}
                         timeCaption="time"
                         dateFormat="MMMM d, yyyy h:mm aa"
                         className="form-control"

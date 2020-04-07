@@ -27,21 +27,19 @@ module.exports = {
             }
         });
     },
-    getUser: (req, res) => {
+    getAllUsers: (req, res) => {
         try {
-            User.find({}, (err, response) => {
-                if (err) {
-                    console.log('ERRORRRR!!')
-                    console.log(err);
-                } else {
-                    console.log(response)
-                    res.status(200).send(response);
-                }
+            return User.find({}).exec().then((response) => {
+                const userMapper = {};
+                response.forEach((user) => {
+                    userMapper[user._id] = user.email
+                })
 
+                return userMapper
             });
         } catch (e) {
-            console.log('eeeeeee')
             console.log(e)
+            return e
         }
 
     },
@@ -70,6 +68,5 @@ module.exports = {
             console.log(e)
         }
     }
-
     //END OF EXPORT
 };
