@@ -73,12 +73,13 @@ class SignupForm extends React.Component {
           usernameError: "Username already exists."
         }
       })
-    });;
+    });
   };
 
   render() {
     return (
       <div className="signup-form" >
+        <h1 className="text-center">Sign Up</h1>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label htmlFor="username">Enter a username</label>

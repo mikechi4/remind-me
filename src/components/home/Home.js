@@ -5,6 +5,7 @@ import './Home.scss';
 
 import ReminderModal from '../reminder-modal/ReminderModal';
 import ReminderItem from '../reminder-item/ReminderItem';
+import { Redirect } from 'react-router-dom';
 
 
 class Home extends React.Component {
@@ -69,11 +70,16 @@ class Home extends React.Component {
 
     logout = async () => {
         const response = await Axios.post("/api/logout");
-
         this.props.history.push('/login');
+        window.localStorage.removeItem('isAuthenticated', false)
     }
 
     render() {
+        const isAuthenticated = window.localStorage.getItem('isAuthenticated');
+
+        if (!isAuthenticated) {
+            return <Redirect to="/login" />
+        }
         return (
             <div className="home-container">
                 <ReminderModal showModal={this.state.showModal} toggleModalState={this.toggleModalState} />

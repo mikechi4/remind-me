@@ -2,7 +2,7 @@ import React from "react";
 import Axios from "axios";
 import { Form, Button } from 'react-bootstrap'
 import "./Login.scss"
-
+import { Redirect } from 'react-router-dom';
 const initialState = {
     username: "",
     password: "",
@@ -32,6 +32,8 @@ class Login extends React.Component {
             data: { username, password }
         }).then((res) => {
             this.setState(initialState);
+            // definitely not the best way to protect routes, but didn't have time to fix. ideally would want to get this from the server and save to a redux store 
+            window.localStorage.setItem('isAuthenticated', true);
             this.props.history.push('/home');
         }).catch((error) => {
             console.log(error.message)
@@ -42,8 +44,14 @@ class Login extends React.Component {
     };
 
     render() {
+        const isAuthenticated = window.localStorage.getItem('isAuthenticated');
+
+        if (isAuthenticated) {
+            return <Redirect to="/home" />
+        }
         return (
             <div className="signup-form" >
+                <h1 className="text-center">Remind Me</h1>
                 <Form onSubmit={this.onSubmit}>
                     <Form.Group className="form-group">
                         <Form.Label htmlFor="username">Enter your username</Form.Label>
@@ -68,6 +76,9 @@ class Login extends React.Component {
                     <div className="form-text text-danger">{this.state.error}</div>
                     <Form.Group className="submit-btn">
                         <Button className="btn btn-success" disabled={!this.state.username || !this.state.password} type="submit"> Log In </Button>
+                    </Form.Group>
+                    <Form.Group className="submit-btn">
+                        <a href="#" className="text-primary" onClick={() => this.props.history.push('/signup')}>Sign Up</a>
                     </Form.Group>
                 </Form>
             </div>
