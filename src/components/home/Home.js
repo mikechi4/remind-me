@@ -67,6 +67,12 @@ class Home extends React.Component {
         }
     }
 
+    logout = async () => {
+        const response = await Axios.post("/api/logout");
+
+        this.props.history.push('/login');
+    }
+
     render() {
         return (
             <div className="home-container">
@@ -77,6 +83,7 @@ class Home extends React.Component {
                 <div className="list-header">
                     <h2>Reminder(s)</h2>
                     <button className="btn btn-primary" onClick={this.toggleModalState}>Create Reminder</button>
+                    <button className="btn btn-danger" onClick={this.logout}>Logout</button>
                 </div>
                 <div className="reminder-list">
                     <ListGroup>
