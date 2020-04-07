@@ -10,18 +10,25 @@ const port = 8080;
 const userCtrl = require("./controllers/userCtrl");
 const reminderCtrl = require("./controllers/reminderCtrl");
 const emailCtrl = require("./email");
+const cookieSession = require('cookie-session');
+
+
+//======= MIDDLEWARE =======
+app.use(bodyParser.json());
+app.use(cors());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
 
 //======= PASSPORT =======
 const passport = require("./passport/passport");
 app.use(passport.initialize());
 app.use(passport.session());
-//======= MIDDLEWARE =======
-app.use(bodyParser.json());
-app.use(cors());
+//======= Mongoose =======
 mongoose.connect("=mongodb://localhost/remind-me", {
   useNewUrlParser: true
 });
-
 const db = mongoose.connection;
 db.on("error", error => {
   console.log(error)
@@ -39,7 +46,7 @@ app.post("/api/add", reminderCtrl.createReminder);
 app.put("/api/edit", reminderCtrl.updateReminder);
 
 // ======= Get Requests
-// app.get("/api/users", userCtrl.getAllUsers);
+app.get("/api/users", userCtrl.getUsers);
 app.get("/api/reminders", reminderCtrl.getReminders);
 
 // ======= Delete Requests
