@@ -28,7 +28,7 @@ const Reminder = (props) => {
         <div className="reminder-container">
             <Form>
                 <Form.Group className="form-group">
-                    <Form.Label htmlFor="reminder">Enter your username</Form.Label>
+                    <Form.Label htmlFor="reminder">Enter a reminder</Form.Label>
                     <Form.Control
                         className="form-control"
                         type="text"
