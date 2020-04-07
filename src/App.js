@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import SignupForm from "./components/signupform/SignupForm";
 import Login from './components/login/Login';
@@ -9,11 +9,12 @@ const App = () => {
   return (
     <div>
       <BrowserRouter>
-        <Route path="/signup" component={SignupForm} />
-        <Route path="/login" component={Login} />
-        <Route path="/home" exact component={Home} />
-        {/* <Route path="/edit" component={EditTask}/> */}
-        {/* <Route path="/add" component={AddTask}/> */}
+        <Switch>
+          <Redirect exact from="/" to="/login" />
+          <Route path="/signup" component={SignupForm} />
+          <Route path="/login" component={Login} />
+          <Route path="/home" exact component={Home} />
+        </Switch>
       </BrowserRouter>
     </div>
   );
