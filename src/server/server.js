@@ -10,14 +10,25 @@ const port = 8080;
 const userCtrl = require("./controllers/userCtrl");
 const reminderCtrl = require("./controllers/reminderCtrl");
 const emailCtrl = require("./email");
+const cookieSession = require('cookie-session');
+
 
 //======= MIDDLEWARE =======
 app.use(bodyParser.json());
 app.use(cors());
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
+
+//======= PASSPORT =======
+const passport = require("./passport/passport");
+app.use(passport.initialize());
+app.use(passport.session());
+//======= Mongoose =======
 mongoose.connect("=mongodb://localhost/remind-me", {
   useNewUrlParser: true
 });
-
 const db = mongoose.connection;
 db.on("error", error => {
   console.log(error)
@@ -27,15 +38,19 @@ db.once("open", () => {
 });
 
 // ======= Post Requests
-app.post("/api/create", userCtrl.createUser);
+app.post("/api/signup", userCtrl.createUser);
 app.post("/api/login", userCtrl.validateLogin);
 app.post("/api/add", reminderCtrl.createReminder);
-
+app.post("/api/logout", function (req, res) {
+  req.logout();
+  console.log(req.session.passport.user)
+  res.status(200).send({ message: "Sucessfully logged out", isAuthenticated: false })
+});
 // ======= Put Requests
 app.put("/api/edit", reminderCtrl.updateReminder);
 
 // ======= Get Requests
-// app.get("/api/users", userCtrl.getUser);
+
 app.get("/api/reminders", reminderCtrl.getReminders);
 
 // ======= Delete Requests
