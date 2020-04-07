@@ -11,6 +11,10 @@ const userCtrl = require("./controllers/userCtrl");
 const reminderCtrl = require("./controllers/reminderCtrl");
 const emailCtrl = require("./email");
 
+//======= PASSPORT =======
+const passport = require("./passport/passport");
+app.use(passport.initialize());
+app.use(passport.session());
 //======= MIDDLEWARE =======
 app.use(bodyParser.json());
 app.use(cors());
@@ -35,7 +39,7 @@ app.post("/api/add", reminderCtrl.createReminder);
 app.put("/api/edit", reminderCtrl.updateReminder);
 
 // ======= Get Requests
-// app.get("/api/users", userCtrl.getUser);
+// app.get("/api/users", userCtrl.getAllUsers);
 app.get("/api/reminders", reminderCtrl.getReminders);
 
 // ======= Delete Requests
