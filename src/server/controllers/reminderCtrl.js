@@ -72,29 +72,5 @@ module.exports = {
         } catch (e) {
             console.log(e)
         }
-    },
-    sendEmailNotification: async (emailList) => {
-        console.log(emailList)
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'remind.me.proj@gmail.com',
-                pass: '******'
-            }
-        });
-
-        const mailOptions = {
-            from: 'remind.me.proj@gmail.com', // sender address
-            to: 'mike.chi4@gmail.com', // list of receivers
-            subject: 'You have a reminder due soon.', // Subject line
-            html: '<p>Your html here</p>'// plain text body
-        };
-
-        transporter.sendMail(mailOptions, function (err, info) {
-            if (err)
-                console.log(err)
-            else
-                console.log(info);
-        });
     }
 }
