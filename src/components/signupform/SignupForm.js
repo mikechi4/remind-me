@@ -54,7 +54,7 @@ class SignupForm extends React.Component {
     event.preventDefault();
     const { username, email, password } = this.state;
 
-    Axios.post("/api/create", {
+    Axios.post("/api/signup", {
       username,
       email,
       password
