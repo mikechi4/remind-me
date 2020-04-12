@@ -1,8 +1,11 @@
+Install packages
+`npm install`
+
 To run react
 `npm start`
 
 To run node:
-
+* Makesure you have Mongo running locally
 ### `cd src/src/server` then `nodemon server.js`
 
 ### To have node send emails
