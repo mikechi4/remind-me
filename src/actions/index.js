@@ -11,3 +11,10 @@ export const getReminders = () => async dispatch => {
     })
 }
 
+export const deleteReminders = (reminderId) => async dispatch => {
+    await Axios.delete(`/api/reminders/${reminderId}`);
+    dispatch({
+        type: "DELETE_REMINDER",
+        payload: reminderId
+    })
+}
