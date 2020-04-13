@@ -8,7 +8,7 @@ import ReminderItem from '../reminder-item/ReminderItem';
 import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { getReminders } from '../../actions';
+import { getReminders, deleteReminders } from '../../actions';
 
 
 class Home extends React.Component {
@@ -16,29 +16,8 @@ class Home extends React.Component {
         super(props);
         this.state = {
             showModal: false,
-            reminderList: [],
             savedNewReminder: false
         }
-    }
-
-    getReminders = () => {
-        Axios.get("/api/reminders").then((response) => {
-            const data = response.data;
-            this.setState({ reminderList: data });
-        })
-    }
-
-    findIndexById = (list, id) => {
-        return list.findIndex((reminder) => {
-            console.log(reminder)
-            return reminder._id === id
-        });
-    }
-    removeDeletedReminder = (deletedReminderId) => {
-        const updatedReminderList = this.state.reminderList.slice();
-        let index = this.findIndexById(updatedReminderList, deletedReminderId);
-        updatedReminderList.splice(index, 1);
-        this.setState({ reminderList: updatedReminderList })
     }
 
     renderReminderList = (savedReminders) => {
@@ -49,16 +28,14 @@ class Home extends React.Component {
                     dueDate={item.dueDate}
                     key={item._id}
                     id={item._id}
-                    removeDeletedReminder={this.removeDeletedReminder}
+                    removeDeletedReminder={this.props.deleteReminders}
                 />
             );
         });
     }
 
-
-
     componentDidMount = () => {
-        this.props.getReminders()
+        this.props.getReminders();
     }
 
     toggleModalState = (didSaveToDb) => {
@@ -67,7 +44,7 @@ class Home extends React.Component {
         })
         // this flag is to see if the user did a save. That way, we can make an API call to re-render most up to date list
         if (didSaveToDb) {
-            this.getReminders();
+            this.props.getReminders();
         }
     }
 
@@ -108,4 +85,4 @@ const mapStateToProps = (state) => {
     return { reminderList: state.reminderList }
 }
 
-export default connect(mapStateToProps, { getReminders })(Home);
+export default connect(mapStateToProps, { getReminders, deleteReminders })(Home);
