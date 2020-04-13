@@ -4,14 +4,13 @@ import { Trash, PencilSquare, ThreeDotsVertical } from 'react-bootstrap-icons';
 import Axios from 'axios';
 import DatePicker from 'react-datepicker';
 import './ReminderItem.scss';
+
 const ReminderItem = (props) => {
     const [isEdit, setIsEdit] = useState(false);
     const [reminderData, setReminderData] = useState(props);
 
     const deleteReminder = (reminderId) => {
-        Axios.delete(`/api/reminders/${reminderId}`).then((res) => {
-            props.removeDeletedReminder(reminderId);
-        })
+        props.removeDeletedReminder(reminderId);
     }
 
     const handleDateChange = (date) => {
@@ -77,6 +76,10 @@ const ReminderItem = (props) => {
             </div>) : ""}
         </ListGroup.Item>
     )
+
+}
+
+const mapStateToProps = () => {
 
 }
 
