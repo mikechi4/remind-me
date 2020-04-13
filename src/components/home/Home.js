@@ -7,6 +7,9 @@ import ReminderModal from '../reminder-modal/ReminderModal';
 import ReminderItem from '../reminder-item/ReminderItem';
 import { Redirect } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import { getReminders } from '../../actions';
+
 
 class Home extends React.Component {
     constructor(props) {
@@ -55,7 +58,7 @@ class Home extends React.Component {
 
 
     componentDidMount = () => {
-        this.getReminders();
+        this.props.getReminders()
     }
 
     toggleModalState = (didSaveToDb) => {
@@ -76,7 +79,7 @@ class Home extends React.Component {
 
     render() {
         const isAuthenticated = window.localStorage.getItem('isAuthenticated');
-
+        console.log(this.props.reminderList)
         if (!isAuthenticated) {
             return <Redirect to="/login" />
         }
@@ -93,7 +96,7 @@ class Home extends React.Component {
                 </div>
                 <div className="reminder-list">
                     <ListGroup>
-                        {this.state.reminderList.length <= 0 ? "Add reminders" : this.renderReminderList(this.state.reminderList)}
+                        {this.props.reminderList.length <= 0 ? "Add reminders" : this.renderReminderList(this.props.reminderList)}
                     </ListGroup>
                 </div>
             </div>
@@ -101,4 +104,8 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+    return { reminderList: state.reminderList }
+}
+
+export default connect(mapStateToProps, { getReminders })(Home);
