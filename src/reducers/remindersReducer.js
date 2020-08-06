@@ -15,6 +15,9 @@ export default (state = [], action) => {
             return action.payload;
         case "DELETE_REMINDER":
             return removeDeletedReminder(state, action.payload);
+        case "ADD_REMINDER":
+            console.log(action.payload)
+            return action.payload
         default:
             return state
     }

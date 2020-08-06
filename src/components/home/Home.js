@@ -8,7 +8,7 @@ import ReminderItem from '../reminder-item/ReminderItem';
 import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { getReminders, deleteReminders } from '../../actions';
+import { getReminders, deleteReminders, addReminder } from '../../actions';
 
 
 class Home extends React.Component {
@@ -36,9 +36,10 @@ class Home extends React.Component {
 
     componentDidMount = () => {
         this.props.getReminders();
+        console.log(this.props)
     }
 
-    toggleModalState = (didSaveToDb) => {
+    toggleModalState = (didSaveToDb = false) => {
         this.setState({
             showModal: !this.state.showModal
         })
@@ -62,7 +63,7 @@ class Home extends React.Component {
         }
         return (
             <div className="home-container">
-                <ReminderModal showModal={this.state.showModal} toggleModalState={this.toggleModalState} />
+                <ReminderModal showModal={this.state.showModal} toggleModalState={this.toggleModalState} addReminder={this.props.addReminder} />
                 <div className="text-center">
                     <h1>Welcome</h1>
                 </div>
@@ -85,4 +86,4 @@ const mapStateToProps = (state) => {
     return { reminderList: state.reminderList }
 }
 
-export default connect(mapStateToProps, { getReminders, deleteReminders })(Home);
+export default connect(mapStateToProps, { getReminders, deleteReminders, addReminder })(Home);

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import Axios from 'axios';
 import Reminder from "../reminder/Reminder";
 
 const defaultState = { reminder: "", dueDate: new Date() };
@@ -23,11 +22,10 @@ const ReminderModal = (props) => {
     }
 
     const saveReminder = () => {
-        Axios.post("/api/add", { ...reminderData }).then((response) => {
-            props.toggleModalState(true);
-            setReminderData(defaultState);
-            setShow(false);
-        })
+        props.addReminder(reminderData);
+        props.toggleModalState(true);
+        setReminderData(defaultState);
+        setShow(false);
     }
     return (
         <Modal

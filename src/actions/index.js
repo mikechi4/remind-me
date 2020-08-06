@@ -18,3 +18,11 @@ export const deleteReminders = (reminderId) => async dispatch => {
         payload: reminderId
     })
 }
+
+export const addReminder = (reminderData) => async dispatch => {
+    const response = await Axios.post("/api/add", { ...reminderData });
+    dispatch({
+        type: "ADD_REMINDER",
+        payload: response
+    })
+}
